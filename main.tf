@@ -59,7 +59,7 @@ resource "aws_dx_private_virtual_interface" "this" {
 
   address_family   = var.aws_dx_vif_address_family
   bgp_asn          = var.aws_dx_vif_customer_asn
-  vlan             = module.equinix-fabric-connection.primary_connection.z_side.access_point.link_protocol.vlan_s_tag
+  vlan             = local.z_side_ap.link_protocol.vlan_s_tag
   amazon_address   = var.aws_dx_vif_amazon_address
   customer_address = var.aws_dx_vif_customer_address
   mtu              = var.aws_dx_mtu_size
