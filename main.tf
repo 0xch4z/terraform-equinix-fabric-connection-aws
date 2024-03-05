@@ -1,11 +1,11 @@
-locals  {
-   aws_dx_id = one([
-       for action_data in one(module.equinix-fabric-connection.primary_connection.actions).required_data: action_data["value"]
-       if action_data["key"] == "awsConnectionId"
-   ])
-   aws_vgw_id = var.aws_dx_create_vgw ? aws_vpn_gateway.this[0].id : var.aws_dx_vgw_id
-   aws_vpc_id = var.aws_dx_create_vgw ? data.aws_vpc.this[0].id : ""
-   aws_region = data.aws_region.this.name
+locals {
+  aws_dx_id = one([
+    for action_data in one(module.equinix-fabric-connection.primary_connection.actions).required_data : action_data["value"]
+    if action_data["key"] == "awsConnectionId"
+  ])
+  aws_vgw_id = var.aws_dx_create_vgw ? aws_vpn_gateway.this[0].id : var.aws_dx_vgw_id
+  aws_vpc_id = var.aws_dx_create_vgw ? data.aws_vpc.this[0].id : ""
+  aws_region = data.aws_region.this.name
 }
 
 data "aws_region" "this" {}
@@ -32,11 +32,11 @@ module "equinix-fabric-connection" {
   # optional variables
   name = var.fabric_connection_name
 
-  seller_profile_name       = var.fabric_speed < 1000 ? "AWS Direct Connect" : "AWS Direct Connect - High Capacity"
-  seller_metro_code         = var.fabric_destination_metro_code
-  seller_metro_name         = var.fabric_destination_metro_name
-  seller_region             = local.aws_region
-  seller_authorization_key  = var.aws_account_id
+  seller_profile_name      = var.fabric_speed < 1000 ? "AWS Direct Connect" : "AWS Direct Connect - High Capacity"
+  seller_metro_code        = var.fabric_destination_metro_code
+  seller_metro_name        = var.fabric_destination_metro_name
+  seller_region            = local.aws_region
+  seller_authorization_key = var.aws_account_id
 
   network_edge_id           = var.network_edge_device_id
   network_edge_interface_id = var.network_edge_device_interface_id
@@ -44,8 +44,7 @@ module "equinix-fabric-connection" {
   vlan_stag                 = var.fabric_vlan_stag
   service_token_id          = var.fabric_service_token_id
   speed                     = var.fabric_speed
-  speed_unit                = "MB"
-  purchase_order_number    = var.fabric_purchase_order_number
+  purchase_order_number     = var.fabric_purchase_order_number
 }
 
 resource "aws_dx_connection_confirmation" "this" {
@@ -55,8 +54,8 @@ resource "aws_dx_connection_confirmation" "this" {
 resource "aws_dx_private_virtual_interface" "this" {
   count = var.aws_dx_create_vif ? 1 : 0
 
-  name             = var.aws_dx_vif_name != "" ? var.aws_dx_vif_name : lower(format("vif-%s", random_string.this.result))
-  connection_id    = aws_dx_connection_confirmation.this.id
+  name          = var.aws_dx_vif_name != "" ? var.aws_dx_vif_name : lower(format("vif-%s", random_string.this.result))
+  connection_id = aws_dx_connection_confirmation.this.id
 
   address_family   = var.aws_dx_vif_address_family
   bgp_asn          = var.aws_dx_vif_customer_asn
@@ -66,7 +65,7 @@ resource "aws_dx_private_virtual_interface" "this" {
   mtu              = var.aws_dx_mtu_size
   bgp_auth_key     = var.aws_dx_bgp_auth_key
 
-  vpn_gateway_id   = local.aws_vgw_id
+  vpn_gateway_id = local.aws_vgw_id
 
   tags = var.aws_tags
 }

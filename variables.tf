@@ -23,7 +23,7 @@ variable "fabric_destination_metro_code" {
   default     = ""
 
   validation {
-    condition = ( 
+    condition = (
       var.fabric_destination_metro_code == "" ? true : can(regex("^[A-Z]{2}$", var.fabric_destination_metro_code))
     )
     error_message = "Valid metro code consits of two capital leters, i.e. 'FR', 'SV', 'DC'."
@@ -100,7 +100,7 @@ variable "fabric_speed" {
   default     = 0
 
   validation {
-    condition = contains([0, 50, 100, 200, 300, 400, 500, 1000, 2000, 5000, 10000], var.fabric_speed)
+    condition     = contains([0, 50, 100, 200, 300, 400, 500, 1000, 2000, 5000, 10000], var.fabric_speed)
     error_message = "Valid values are (50, 100, 200, 300, 400, 500, 1000, 2000, 5000, 10000)."
   }
 }
@@ -164,7 +164,7 @@ variable "aws_dx_vif_address_family" {
   default     = "ipv4"
 
   validation {
-    condition = contains(["ipv4", "ipv6"], var.aws_dx_vif_address_family)
+    condition     = contains(["ipv4", "ipv6"], var.aws_dx_vif_address_family)
     error_message = "Valid values are (ipv4, ipv6)."
   }
 }
@@ -205,7 +205,7 @@ variable "aws_dx_bgp_auth_key" {
 variable "aws_tags" {
   type        = map(string)
   description = "Tags for AWS resources."
-  default     = {
+  default = {
     Terraform = "true"
   }
 }
