@@ -1,8 +1,8 @@
 locals {
-  aws_dx_id = one([
-    for action_data in one(module.equinix-fabric-connection.primary_connection.actions).required_data : action_data["value"]
-    if action_data["key"] == "awsConnectionId"
-  ])
+  z_side = one(module.equinix-fabric-connection.primary_connection.z_side)
+  z_side_ap = one(local.z_side.access_point)
+  aws_dx_id = local.z_side_ap.provider_connection_id
+
   aws_vgw_id = var.aws_dx_create_vgw ? aws_vpn_gateway.this[0].id : var.aws_dx_vgw_id
   aws_vpc_id = var.aws_dx_create_vgw ? data.aws_vpc.this[0].id : ""
   aws_region = data.aws_region.this.name

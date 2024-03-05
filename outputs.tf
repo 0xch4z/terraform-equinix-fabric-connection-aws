@@ -8,36 +8,6 @@ output "fabric_connection_name" {
   value       = module.equinix-fabric-connection.primary_connection.name
 }
 
-output "fabric_connection_status" {
-  description = "Connection provisioning status."
-  value       = module.equinix-fabric-connection.primary_connection.status
-}
-
-output "fabric_connection_provider_status" {
-  description = "Connection provisioning provider status."
-  value       = module.equinix-fabric-connection.primary_connection.provider_status
-}
-
-output "fabric_connection_speed" {
-  description = "Connection speed."
-  value       = module.equinix-fabric-connection.primary_connection.speed
-}
-
-output "fabric_connection_speed_unit" {
-  description = "Connection speed unit."
-  value       = module.equinix-fabric-connection.primary_connection.speed_unit
-}
-
-output "fabric_connection_seller_metro" {
-  description = "Connection seller metro code."
-  value       = module.equinix-fabric-connection.primary_connection.seller_metro_code
-}
-
-output "fabric_connection_seller_region" {
-  description = "Connection seller region."
-  value       = module.equinix-fabric-connection.primary_connection.seller_region
-}
-
 output "network_edge_bgp_state" {
   description = "Network Edge device BGP peer state."
   value       = try(equinix_network_bgp.this[0].state, null)
